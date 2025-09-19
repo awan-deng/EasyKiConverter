@@ -118,3 +118,6 @@ easyeda2kicad_config.json
 
 # Reference project (exclude from main project)
 python/
+scripts/..venv/
+scripts/..python/
+scripts/python-3.13.7-amd64.zip
