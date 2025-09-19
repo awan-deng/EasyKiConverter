@@ -7,10 +7,10 @@ EasyKiConverter Web UI - 集成真实EasyKiConverter工具链
 import sys
 import os
 
-# 添加父目录到 Python 路径
+# 添加项目根目录到 Python 路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, parent_dir)
+project_root = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, project_root)
 
 import json
 import tempfile
@@ -31,17 +31,17 @@ import warnings
 
 # 导入EasyKiConverter的核心模块
 try:
-    from easyeda.easyeda_api import EasyedaApi
-    from easyeda.easyeda_importer import (
+    from easyki.easyeda.easyeda_api import EasyedaApi
+    from easyki.easyeda.easyeda_importer import (
         Easyeda3dModelImporter,
         EasyedaFootprintImporter,
         EasyedaSymbolImporter,
     )
-    from kicad.export_kicad_3d_model import Exporter3dModelKicad
-    from kicad.export_kicad_footprint import ExporterFootprintKicad
-    from kicad.export_kicad_symbol import ExporterSymbolKicad
-    from kicad.parameters_kicad_symbol import KicadVersion
-    from symbol_lib_utils import add_component_in_symbol_lib_file, id_already_in_symbol_lib
+    from easyki.kicad.export_kicad_3d_model import Exporter3dModelKicad
+    from easyki.kicad.export_kicad_footprint import ExporterFootprintKicad
+    from easyki.kicad.export_kicad_symbol import ExporterSymbolKicad
+    from easyki.kicad.parameters_kicad_symbol import KicadVersion
+    from easyki.core.symbol_lib_utils import add_component_in_symbol_lib_file, id_already_in_symbol_lib
 except ImportError as e:
     print(f"导入错误: {e}")
     print(f"当前工作目录: {os.getcwd()}")
@@ -49,7 +49,7 @@ except ImportError as e:
     raise
 
 # 导入配置管理器
-from config_manager import ConfigManager
+from ui.web.config_manager import ConfigManager
 
 # 创建Flask应用
 app = Flask(__name__)
@@ -393,10 +393,7 @@ def export_component_real_threadsafe(lcsc_id: str, export_path: str, export_opti
             if not os.path.isfile(symbol_lib_path):
                 with open(symbol_lib_path, "w+", encoding="utf-8") as my_lib:
                     my_lib.write(
-                        '''(kicad_symbol_lib
-  (version 20211014)
-  (generator https://github.com/uPesy/easyeda2kicad.py)
-)'''
+                        '''(kicad_symbol_lib)'''
                         if kicad_version == KicadVersion.v6
                         else "EESchema-LIBRARY Version 2.4\n#encoding utf-8\n"
                     )
@@ -564,10 +561,7 @@ def export_component_real(lcsc_id: str, export_path: str, export_options: Dict[s
         if not os.path.isfile(symbol_lib_path):
             with open(symbol_lib_path, "w+", encoding="utf-8") as my_lib:
                 my_lib.write(
-                    '''(kicad_symbol_lib
-  (version 20211014)
-  (generator https://github.com/uPesy/easyeda2kicad.py)
-)'''
+                    '''(kicad_symbol_lib)'''
                     if kicad_version == KicadVersion.v6
                     else "EESchema-LIBRARY Version 2.4\n#encoding utf-8\n"
                 )

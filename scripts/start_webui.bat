@@ -7,8 +7,8 @@ echo =====================================
 echo.
 
 REM Set project root path
-set "project_root=%~dp0"
-set "base_path=%project_root%EasyKiConverter"
+set "project_root=%~dp0.."
+set "base_path=%project_root%\EasyKiConverter"
 
 REM Check for project-specific Python and add to PATH if exists
 set "PYTHON_EXEC="
@@ -202,10 +202,6 @@ if errorlevel 1 (
         echo Downloading Python 3.13.7 using curl...
         curl -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
         
-        REM Try to download Python using curl first
-        echo Downloading Python 3.13.7 using curl...
-        curl -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
-        
         if errorlevel 1 (
             echo.
             echo ERROR: Failed to download Python using curl.
@@ -389,10 +385,10 @@ if exist "%base_path%\requirements.txt" (
 REM Install Web UI requirements
 echo.
 echo Installing Web UI dependencies...
-python -m pip install -r "%base_path%\Web_Ui\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
+python -m pip install -r "%project_root%\ui\web\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
 if errorlevel 1 (
     echo Failed with mirror, trying default source...
-    python -m pip install -r "%base_path%\Web_Ui\requirements.txt"
+    python -m pip install -r "%project_root%\ui\web\requirements.txt"
     if errorlevel 1 (
         echo ERROR: Failed to install Web UI dependencies.
         echo Please check your internet connection and try again.
@@ -420,7 +416,7 @@ echo Press Ctrl+C to stop the server when you're done.
 echo.
 
 REM Change to the Web UI directory and start the server
-cd /d "%base_path%\Web_Ui"
+cd /d "%project_root%\ui\web"
 
 REM Add project Python to PATH if it exists
 REM Start server and open browser
