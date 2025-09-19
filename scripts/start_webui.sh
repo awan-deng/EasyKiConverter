@@ -12,7 +12,7 @@ echo
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASE_PATH="$SCRIPT_DIR/EasyKiConverter"
+BASE_PATH="$SCRIPT_DIR/.."
 PYTHON_DIR="$SCRIPT_DIR/python"
 PYTHON_EXE="$PYTHON_DIR/bin/python3"
 
@@ -363,12 +363,12 @@ echo "Installing dependencies using domestic mirror for faster speed..."
 echo
 
 # Install main requirements if exists
-if [ -f "$BASE_PATH/requirements.txt" ]; then
+if [ -f "$BASE_PATH/EasyKiConverter/requirements.txt" ]; then
     echo "Installing main project dependencies..."
-    pip install -r "$BASE_PATH/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
+    pip install -r "$BASE_PATH/EasyKiConverter/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
     if [ $? -ne 0 ]; then
         echo "Some main dependencies failed with mirror, trying default source..."
-        pip install -r "$BASE_PATH/requirements.txt"
+        pip install -r "$BASE_PATH/EasyKiConverter/requirements.txt"
         if [ $? -ne 0 ]; then
             echo "WARNING: Some main dependencies failed to install."
         fi
@@ -381,10 +381,10 @@ fi
 # Install Web UI requirements
 echo
 echo "Installing Web UI dependencies..."
-pip install -r "$BASE_PATH/Web_Ui/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
+pip install -r "$BASE_PATH/ui/web/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
 if [ $? -ne 0 ]; then
     echo "Failed with mirror, trying default source..."
-    pip install -r "$BASE_PATH/Web_Ui/requirements.txt"
+    pip install -r "$BASE_PATH/ui/web/requirements.txt"
     if [ $? -ne 0 ]; then
         echo "ERROR: Failed to install Web UI dependencies."
         echo "Please check your internet connection and try again."
@@ -411,7 +411,7 @@ echo "Press Ctrl+C to stop the server when you're done."
 echo
 
 # Change to the Web UI directory and start the server
-cd "$BASE_PATH/Web_Ui"
+cd "$BASE_PATH/ui/web"
 
 # Start server and open browser (if available)
 if command -v xdg-open &> /dev/null; then
