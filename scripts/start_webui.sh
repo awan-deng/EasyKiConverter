@@ -362,36 +362,36 @@ fi
 echo "Installing dependencies using domestic mirror for faster speed..."
 echo
 
-# Install main requirements if exists
-if [ -f "$BASE_PATH/EasyKiConverter/requirements.txt" ]; then
-    echo "Installing main project dependencies..."
-    pip install -r "$BASE_PATH/EasyKiConverter/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
+# Install project requirements from root directory
+if [ -f "$BASE_PATH/requirements.txt" ]; then
+    echo "Installing project dependencies..."
+    pip install -r "$BASE_PATH/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
     if [ $? -ne 0 ]; then
-        echo "Some main dependencies failed with mirror, trying default source..."
-        pip install -r "$BASE_PATH/EasyKiConverter/requirements.txt"
+        echo "Some dependencies failed with mirror, trying default source..."
+        pip install -r "$BASE_PATH/requirements.txt"
         if [ $? -ne 0 ]; then
-            echo "WARNING: Some main dependencies failed to install."
+            echo "WARNING: Some dependencies failed to install."
         fi
     fi
-    echo "Main dependencies installed successfully!"
+    echo "Project dependencies installed successfully!"
 else
-    echo "WARNING: Main requirements file not found, skipping."
+    echo "WARNING: Project requirements file not found, skipping."
 fi
 
-# Install Web UI requirements
+# Install project requirements from root directory
 echo
-echo "Installing Web UI dependencies..."
-pip install -r "$BASE_PATH/ui/web/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
+echo "Installing project dependencies..."
+pip install -r "$BASE_PATH/requirements.txt" -i $PIP_INDEX_URL --trusted-host $PIP_TRUSTED_HOST
 if [ $? -ne 0 ]; then
     echo "Failed with mirror, trying default source..."
-    pip install -r "$BASE_PATH/ui/web/requirements.txt"
+    pip install -r "$BASE_PATH/requirements.txt"
     if [ $? -ne 0 ]; then
-        echo "ERROR: Failed to install Web UI dependencies."
+        echo "ERROR: Failed to install project dependencies."
         echo "Please check your internet connection and try again."
         exit 1
     fi
 fi
-echo "Web UI dependencies installed successfully!"
+echo "Project dependencies installed successfully!"
 
 echo
 echo "All dependencies installed successfully!"

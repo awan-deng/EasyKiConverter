@@ -366,37 +366,37 @@ if errorlevel 1 (
 echo Installing dependencies using domestic mirror for faster speed...
 echo.
 
-REM Install main requirements if exists
-if exist "%base_path%\requirements.txt" (
-    echo Installing main project dependencies...
-    python -m pip install -r "%base_path%\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
+REM Install project requirements from root directory
+if exist "%project_root%\requirements.txt" (
+    echo Installing project dependencies...
+    python -m pip install -r "%project_root%\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
     if errorlevel 1 (
-        echo Some main dependencies failed with mirror, trying default source...
-        python -m pip install -r "%base_path%\requirements.txt"
+        echo Some dependencies failed with mirror, trying default source...
+        python -m pip install -r "%project_root%\requirements.txt"
         if errorlevel 1 (
-            echo WARNING: Some main dependencies failed to install.
+            echo WARNING: Some dependencies failed to install.
         )
     )
-    echo Main dependencies installed successfully!
+    echo Project dependencies installed successfully!
 ) else (
-    echo WARNING: Main requirements file not found, skipping.
+    echo WARNING: Project requirements file not found, skipping.
 )
 
-REM Install Web UI requirements
+REM Install project requirements from root directory
 echo.
-echo Installing Web UI dependencies...
-python -m pip install -r "%project_root%\ui\web\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
+echo Installing project dependencies...
+python -m pip install -r "%project_root%\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
 if errorlevel 1 (
     echo Failed with mirror, trying default source...
-    python -m pip install -r "%project_root%\ui\web\requirements.txt"
+    python -m pip install -r "%project_root%\requirements.txt"
     if errorlevel 1 (
-        echo ERROR: Failed to install Web UI dependencies.
+        echo ERROR: Failed to install project dependencies.
         echo Please check your internet connection and try again.
         pause
         exit /b 1
     )
 )
-echo Web UI dependencies installed successfully!
+echo Project dependencies installed successfully!
 
 echo.
 echo All dependencies installed successfully!
