@@ -6,7 +6,7 @@ import logging
 import re
 from typing import Optional
 
-from kicad.parameters_kicad_symbol import KicadVersion
+from easyki.kicad.parameters_kicad_symbol import KicadVersion
 
 
 def add_component_in_symbol_lib_file(

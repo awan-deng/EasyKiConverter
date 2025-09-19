@@ -31,17 +31,17 @@ import warnings
 
 # 导入EasyKiConverter的核心模块
 try:
-    from easyeda.easyeda_api import EasyedaApi
-    from easyeda.easyeda_importer import (
+    from easyki.easyeda.easyeda_api import EasyedaApi
+    from easyki.easyeda.easyeda_importer import (
         Easyeda3dModelImporter,
         EasyedaFootprintImporter,
         EasyedaSymbolImporter,
     )
-    from kicad.export_kicad_3d_model import Exporter3dModelKicad
-    from kicad.export_kicad_footprint import ExporterFootprintKicad
-    from kicad.export_kicad_symbol import ExporterSymbolKicad
-    from kicad.parameters_kicad_symbol import KicadVersion
-    from symbol_lib_utils import add_component_in_symbol_lib_file, id_already_in_symbol_lib
+    from easyki.kicad.export_kicad_3d_model import Exporter3dModelKicad
+    from easyki.kicad.export_kicad_footprint import ExporterFootprintKicad
+    from easyki.kicad.export_kicad_symbol import ExporterSymbolKicad
+    from easyki.kicad.parameters_kicad_symbol import KicadVersion
+    from easyki.core.symbol_lib_utils import add_component_in_symbol_lib_file, id_already_in_symbol_lib
 except ImportError as e:
     print(f"导入错误: {e}")
     print(f"当前工作目录: {os.getcwd()}")
@@ -49,7 +49,7 @@ except ImportError as e:
     raise
 
 # 导入配置管理器
-from config_manager import ConfigManager
+from ui.web.config_manager import ConfigManager
 
 # 创建Flask应用
 app = Flask(__name__)

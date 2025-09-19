@@ -9,19 +9,19 @@ cd EasyKiConverter
 
 # Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux/Mac
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
 
 # Install dependencies
-pip install -r EasyKiConverter/Web_Ui/requirements.txt
+pip install -r ui/web/requirements.txt
 ```
 
 ## 🌐 Web UI Development
 
 ```bash
 # Start development server
-cd EasyKiConverter/Web_Ui
-python app.py
+cd ui/web
+python server.py
 
 # Access development interface
 # http://localhost:8000
@@ -33,63 +33,42 @@ python app.py
 - Modify `js/script.js` - Interaction logic
 
 **Backend Development:**
-- Modify `app.py` - API interfaces and routing
-- Core conversion logic in `../` directory
+- Modify `server.py` - API interfaces and routing
+- Core conversion logic in `easyki/` directory
 
 ## 🛠️ Command Line Development
 
-```bash
-# Run basic conversion test
-cd EasyKiConverter
-python main.py --lcsc_id C13377 --symbol --debug
-
-# Test different component types
-python main.py --lcsc_id C25804 --footprint --debug  # Test footprints
-python main.py --lcsc_id C13377 --model3d --debug    # Test 3D models
-```
+The project is currently under refactoring, and the command-line tool is not yet fully implemented. The core conversion logic is located in the `easyki/` directory.
 
 ## 🔧 Code Structure
 
-- **easyeda/** - EasyEDA API and data processing
-- **kicad/** - KiCad format export engines
-- **Web_Ui/** - Flask web application
-- **main.py** - Command-line entry point
-- **helpers.py** - Shared utility functions
+- **easyki/** - New core conversion engine
+  - **easyki/easyeda/** - EasyEDA API and data processing
+  - **easyki/kicad/** - KiCad format export engines
+  - **easyki/core/** - Core utility functions
+  - **easyki/config/** - Configuration management
+  - **easyki/utils/** - General utility functions
+- **ui/web/** - Flask web application
+- **docs/** - Documentation directory
+- **scripts/** - Startup scripts
 
-## 🔧 Command Line Options
+## 🔧 Web UI Options
 
-```bash
-python main.py [options]
+The Web UI provides a graphical interface to use EasyKiConverter's functionality:
 
-Required parameters:
-  --lcsc_id TEXT         LCSC part number to convert (e.g., C13377)
-
-Export options (at least one required):
-  --symbol               Export symbols (.kicad_sym)
-  --footprint            Export footprints (.kicad_mod)
-  --model3d              Export 3D models
-
-Optional parameters:
-  --output_dir PATH      Output directory path [default: ./output]
-  --lib_name TEXT        Library file name [default: EasyKiConverter]
-  --kicad_version INT    KiCad version (5 or 6) [default: 6]
-  --overwrite            Overwrite existing files
-  --debug                Enable detailed logging
-  --help                 Show help information
-```
+1. Access http://localhost:8000
+2. Enter the LCSC part number to convert
+3. Select the file types to export (symbols, footprints, 3D models)
+4. Click the export button to start conversion
 
 ### 📝 Usage Examples
 
 ```bash
-# Export all content to default directory
-python main.py --lcsc_id C13377 --symbol --footprint --model3d
+# Start Web UI server
+cd ui/web
+python server.py
 
-# Export symbols only to specified directory
-python main.py --lcsc_id C13377 --symbol --output_dir ./my_symbols
-
-# Export to custom library name
-python main.py --lcsc_id C13377 --symbol --footprint --lib_name MyComponents
-
-# Enable debug mode
-python main.py --lcsc_id C13377 --symbol --debug
+# Or use startup scripts
+./scripts/start_webui.sh  # Linux/Mac
+scripts/start_webui.bat   # Windows
 ```
