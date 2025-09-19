@@ -86,7 +86,7 @@ if errorlevel 1 (
             
             REM Try to download Python using curl first
             echo Downloading Python 3.13.7 using curl...
-            curl -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
+            curl -s -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
             
             if errorlevel 1 (
                 echo.
@@ -96,7 +96,7 @@ if errorlevel 1 (
                 
                 REM Alternative download method using powershell
                 echo Downloading Python 3.13.7 from official source...
-                powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe' -OutFile '%project_root%python\python-installer.exe' -ErrorAction Stop } catch { exit 1 }"
+                powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe' -OutFile '%project_root%python\python-installer.exe' -ErrorAction Stop -UseBasicParsing } catch { exit 1 }"
                 
                 if errorlevel 1 (
                     echo.
@@ -105,7 +105,7 @@ if errorlevel 1 (
                     echo.
                     
                     REM Alternative download method using bitsadmin
-                    bitsadmin /transfer pythonDownloadJob /download /priority normal "https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe" "%project_root%python\python-installer.exe"
+                    bitsadmin /transfer pythonDownloadJob /download /priority normal "https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe" "%project_root%python\python-installer.exe" >nul 2>&1
                     
                     if errorlevel 1 (
                         echo.
@@ -137,7 +137,7 @@ if errorlevel 1 (
             ) else (
                 echo Extracting Python...
                 REM Extract the zip file to python directory
-                powershell -Command "Expand-Archive -Path 'python-3.13.7-amd64.zip' -DestinationPath '%project_root%python' -Force"
+                powershell -Command "Expand-Archive -Path 'python-3.13.7-amd64.zip' -DestinationPath '%project_root%python' -Force" >nul 2>&1
                 
                 if errorlevel 1 (
                     echo.
@@ -200,7 +200,7 @@ if errorlevel 1 (
         
         REM Try to download Python using curl first
         echo Downloading Python 3.13.7 using curl...
-        curl -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
+        curl -s -L -O https://mirrors.ustc.edu.cn/python/3.13.7/python-3.13.7-amd64.zip
         
         if errorlevel 1 (
             echo.
@@ -210,7 +210,7 @@ if errorlevel 1 (
             
             REM Alternative download method using powershell
             echo Downloading Python 3.13.7 from official source...
-            powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe' -OutFile '%project_root%python\python-installer.exe' -ErrorAction Stop } catch { exit 1 }"
+            powershell -Command "try { Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe' -OutFile '%project_root%python\python-installer.exe' -ErrorAction Stop -UseBasicParsing } catch { exit 1 }"
             
             if errorlevel 1 (
                 echo.
@@ -219,7 +219,7 @@ if errorlevel 1 (
                 echo.
                 
                 REM Alternative download method using bitsadmin
-                bitsadmin /transfer pythonDownloadJob /download /priority normal "https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe" "%project_root%python\python-installer.exe"
+                bitsadmin /transfer pythonDownloadJob /download /priority normal "https://www.python.org/ftp/python/3.13.7/python-3.13.7-amd64.exe" "%project_root%python\python-installer.exe" >nul 2>&1
                 
                 if errorlevel 1 (
                     echo.
@@ -250,7 +250,7 @@ if errorlevel 1 (
         ) else (
             echo Extracting Python...
             REM Extract the zip file to python directory
-            powershell -Command "Expand-Archive -Path 'python-3.13.7-amd64.zip' -DestinationPath '%project_root%python' -Force"
+            powershell -Command "Expand-Archive -Path 'python-3.13.7-amd64.zip' -DestinationPath '%project_root%python' -Force" >nul 2>&1
             
             if errorlevel 1 (
                 echo.
@@ -357,10 +357,10 @@ set "PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn"
 
 REM Upgrade pip in virtual environment
 echo Upgrading pip using Tsinghua mirror...
-python -m pip install --upgrade pip -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST% >nul 2>&1
+python -m pip install --upgrade pip -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
 if errorlevel 1 (
     echo Failed to upgrade pip using mirror, trying default source...
-    python -m pip install --upgrade pip >nul 2>&1
+    python -m pip install --upgrade pip
 )
 
 echo Installing dependencies using domestic mirror for faster speed...
@@ -381,22 +381,6 @@ if exist "%project_root%\requirements.txt" (
 ) else (
     echo WARNING: Project requirements file not found, skipping.
 )
-
-REM Install project requirements from root directory
-echo.
-echo Installing project dependencies...
-python -m pip install -r "%project_root%\requirements.txt" -i %PIP_INDEX_URL% --trusted-host %PIP_TRUSTED_HOST%
-if errorlevel 1 (
-    echo Failed with mirror, trying default source...
-    python -m pip install -r "%project_root%\requirements.txt"
-    if errorlevel 1 (
-        echo ERROR: Failed to install project dependencies.
-        echo Please check your internet connection and try again.
-        pause
-        exit /b 1
-    )
-)
-echo Project dependencies installed successfully!
 
 echo.
 echo All dependencies installed successfully!
